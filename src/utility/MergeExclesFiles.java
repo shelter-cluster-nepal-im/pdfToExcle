@@ -12,10 +12,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class MergeExclesFiles {
 
+    private static String filePath = PropertiesUtil.getFilePath();
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
         List<FileInputStream> list = new ArrayList<FileInputStream>();
-        File file = new File("excleFiles/");
-        File newFile = new File("excleFiles/CensusData.xlsx");
+        File file = new File(filePath);
+        File newFile = new File(filePath + "CensusData.xlsx");
         File[] listOfFiles = file.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
             File filePath = new File(listOfFiles[i].getAbsolutePath());

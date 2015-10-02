@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class WriteToExcle {
 
-    private static final String filePath = "excleFiles/";
+    private static String filePath = PropertiesUtil.getFilePath();
 
     public void writeIntoExcle(List<CensusBean> list) {
         // Using XSSF for xlsx format, for xls use HSSF

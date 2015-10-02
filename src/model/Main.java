@@ -1,7 +1,7 @@
 package model;
 
 import bean.*;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +19,12 @@ public class Main {
     static String district;
 
     public static void main(String[] args) {
+        PropertiesUtil.loadPropertiesFile();
         Document document = getDocument();
         String url = null;
         if (document != null) {
             System.out.println("CONNECTION ESTABLISHED");
-            Elements urlList = document.select("table[border=1]").select("a[href*=http://cbs.gov.np/wp-content/uploads/2014/04]");
+            Elements urlList = document.select(PropertiesUtil.getTableTag()).select(PropertiesUtil.getAnchorTag());
             ParsePdf pPdf = new ParsePdf();
             System.out.println("PDF TO EXCLE FOR CENSUS DATA FROM CENTRAL BUREAU OF STATISTICS 2011");
             for (int i = 0; i < urlList.size(); i++) {
@@ -38,27 +39,7 @@ public class Main {
                 wTe.writeIntoExcle(list);
             }
         }
-
-//        Scanner in = new Scanner(System.in);
-//        char check;
         System.out.println("PDF TO EXCLE FOR CENSUS DATA FROM CENTRAL BUREAU OF STATISTICS 2011");
-//        do {
-//            System.out.println("Enter The URL of the PDF : ");
-//            url = in.nextLine();
-//            System.out.println("Enter The Name Of District : ");
-//            district = in.nextLine();
-
-//            System.out.println("Parsing PDF for the " + district + " district");
-//            System.out.println("It may take few Minutes");
-//        ParsePdf pPdf = new ParsePdf();
-//        String pdfText = pPdf.readPdf(url);
-//        List<Bean> list = new ArrayList<Bean>();
-//        list = filterPdfText(pdfText);
-//        WriteToExcle wTe = new WriteToExcle();
-//        wTe.writeIntoExcle(list);
-//            System.out.println("Do u want to continue(Y/N) : ");
-//            check = in.next().toUpperCase().charAt(0);
-//        } while (check == 'Y');
     }
 
     private static List<CensusBean> filterPdfText(String pdfText) {
@@ -111,8 +92,8 @@ public class Main {
     public static Document getDocument() {
         Document document = null;
         try {
-            System.out.println("CONNECTING TO THE CENTRAL BUREAU OF STATISTICS Url : http://cbs.gov.np/?p=2191");
-            document = Jsoup.connect("http://cbs.gov.np/?p=2191").get();
+            System.out.println("CONNECTING TO THE CENTRAL BUREAU OF STATISTICS Url : "+PropertiesUtil.getWebUrl() );
+            document = Jsoup.connect(PropertiesUtil.getWebUrl()).get();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
